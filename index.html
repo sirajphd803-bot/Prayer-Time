@@ -1,0 +1,712 @@
+<!DOCTYPE html>
+<html lang="ml">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>Prayer timeStr</title>
+  <!-- PWA Web App Manifest & App Icon Link -->
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#0284c7">
+<link rel="apple-touch-icon" href="icon.png">
+
+
+  <!-- Google Font: Anek Malayalam -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Anek+Malayalam:wght@400;600;700;800&display=swap" rel="stylesheet">
+
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html, body {
+      width: 100%;
+      height: 100vh;
+      overflow: hidden;
+      font-family: 'Anek Malayalam', sans-serif;
+      background: linear-gradient(180deg, #0284c7 0%, #0369a1 40%, #0f172a 100%);
+      color: #ffffff;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      padding: 12px;
+      user-select: none;
+    }
+
+    /* Header Styling */
+    header {
+      text-align: center;
+      flex-shrink: 0;
+    }
+
+    .masjid-title {
+      font-size: 34px;
+      font-weight: 800;
+      color: #ffffff;
+      line-height: 1.1;
+    }
+
+    .masjid-location {
+      font-size: 20px;
+      color: #bae6fd;
+      margin-top: 2px;
+    }
+
+    .clock-container {
+      margin-top: 4px;
+    }
+
+    .time-display {
+      font-size: 32px;
+      font-weight: 800;
+      line-height: 1;
+      display: flex;
+      align-items: baseline;
+      justify-content: center;
+      gap: 6px;
+    }
+
+    .ampm {
+      font-size: 16px;
+      font-weight: 700;
+      color: #7dd3fc;
+    }
+
+    .date-row {
+      font-size: 12px;
+      color: #e0f2fe;
+      margin-top: 4px;
+      display: flex;
+      justify-content: center;
+      gap: 8px;
+      font-weight: 600;
+    }
+
+    .next-prayer-badge {
+      display: inline-block;
+      background: rgba(8, 47, 73, 0.6);
+      border: 1px solid rgba(56, 189, 248, 0.4);
+      color: #7dd3fc;
+      font-size: 11px;
+      padding: 3px 12px;
+      border-radius: 20px;
+      margin-top: 6px;
+    }
+
+    /* Table & Cards Layout */
+    main {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      margin: 8px 0;
+      gap: 6px;
+      overflow: hidden;
+    }
+
+    .prayer-card {
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(255, 255, 255, 0.18);
+      border-radius: 12px;
+      padding: 6px 14px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 14%;
+    }
+
+    .prayer-card-active {
+      background: rgba(6, 182, 212, 0.25);
+      border: 2px solid #22d3ee;
+      box-shadow: 0 0 15px rgba(34, 211, 238, 0.3);
+      border-radius: 12px;
+      padding: 6px 14px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 14%;
+    }
+
+    .prayer-info {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .icon-box {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.15);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 14px;
+    }
+
+    .prayer-names {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .ml-name {
+      font-size: 15px;
+      font-weight: 700;
+      line-height: 1.1;
+    }
+
+    .ar-name {
+      font-size: 16px;
+      color: #7dd3fc;
+    }
+
+    .prayer-times {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-weight: 700;
+      font-size: 16px;
+    }
+
+    .iqamah-box {
+      background: rgba(255, 255, 255, 0.15);
+      padding: 2px 8px;
+      border-radius: 6px;
+      min-width: 58px;
+      text-align: center;
+    }
+
+    .iqamah-box-active {
+      background: #06b6d4;
+      color: #0f172a;
+      padding: 2px 8px;
+      border-radius: 6px;
+      min-width: 58px;
+      text-align: center;
+    }
+
+    /* Footer */
+    footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-shrink: 0;
+    }
+
+    .gear-btn {
+      background: rgba(255, 255, 255, 0.15);
+      border: none;
+      color: #7dd3fc;
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      cursor: pointer;
+      font-size: 14px;
+    }
+
+    .footer-text {
+      font-size: 10px;
+      color: rgba(224, 242, 254, 0.6);
+    }
+
+    /* Modal Styling */
+    .modal {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.8);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 16px;
+      z-index: 100;
+    }
+
+    .modal-content {
+      background: #0f172a;
+      border: 1px solid #334155;
+      width: 100%;
+      max-width: 360px;
+      border-radius: 16px;
+      padding: 16px;
+      max-height: 90vh;
+      overflow-y: auto;
+      font-size: 13px;
+    }
+
+    .modal-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 12px;
+    }
+
+    .modal-title {
+      font-size: 15px;
+      font-weight: 700;
+      color: #38bdf8;
+    }
+
+    .close-btn {
+      background: none;
+      border: none;
+      color: #94a3b8;
+      font-size: 18px;
+      cursor: pointer;
+    }
+
+    .form-group {
+      margin-bottom: 8px;
+    }
+
+    .form-group label {
+      display: block;
+      font-size: 11px;
+      color: #94a3b8;
+      margin-bottom: 2px;
+    }
+
+    .form-group input[type="text"], .form-group select {
+      width: 100%;
+      background: #1e293b;
+      border: 1px solid #334155;
+      color: #fff;
+      padding: 6px;
+      border-radius: 6px;
+    }
+
+    .timing-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 6px;
+      align-items: center;
+      background: rgba(30, 41, 59, 0.5);
+      padding: 4px 8px;
+      border-radius: 6px;
+      margin-bottom: 4px;
+    }
+
+    .timing-row input {
+      background: #334155;
+      border: none;
+      color: #fff;
+      padding: 3px;
+      border-radius: 4px;
+      text-align: center;
+    }
+
+    .save-btn {
+      width: 100%;
+      background: #0284c7;
+      color: #fff;
+      border: none;
+      padding: 8px;
+      border-radius: 6px;
+      font-weight: 700;
+      margin-top: 12px;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Header -->
+  <header>
+    <div id="masjidName" class="masjid-title">സലഫി മസ്ജിദ്</div>
+    <div id="masjidLocation" class="masjid-location">പൂകയൂർ കുന്നത്ത്</div>
+
+    <div class="clock-container">
+      <div class="time-display">
+        <span id="currentTime">00:00:00</span>
+        <span id="ampm" class="ampm">AM</span>
+      </div>
+
+      <div class="date-row">
+        <span id="hijriDate">-- --- ----</span>
+        <span>•</span>
+        <span id="gregorianDate">-- --- ----</span>
+      </div>
+
+      <div>
+        <span class="next-prayer-badge">
+          Next: <span id="nextPrayerName">--</span> <span id="nextPrayerTime">--:--</span> (<span id="countdown">--:--:--</span>)
+        </span>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Prayer Cards -->
+  <main>
+    <div id="row-fajar" class="prayer-card">
+      <div class="prayer-info">
+        <div class="icon-box">🌤️</div>
+        <div class="prayer-names">
+          <span class="ml-name">ഫജ്ർ</span>
+          <span class="ar-name">الفجر</span>
+        </div>
+      </div>
+      <div class="prayer-times">
+        <span id="adhan-fajar">05:06</span>
+        <span id="iqamah-fajar" class="iqamah-box">05:31</span>
+      </div>
+    </div>
+
+    <div id="row-dhuhr" class="prayer-card">
+      <div class="prayer-info">
+        <div class="icon-box">☀️</div>
+        <div class="prayer-names">
+          <span class="ml-name">ളുഹ്ർ</span>
+          <span class="ar-name">الظهر</span>
+        </div>
+      </div>
+      <div class="prayer-times">
+        <span id="adhan-dhuhr">12:28</span>
+        <span id="iqamah-dhuhr" class="iqamah-box">12:48</span>
+      </div>
+    </div>
+
+    <div id="row-asr" class="prayer-card">
+      <div class="prayer-info">
+        <div class="icon-box">🌥️</div>
+        <div class="prayer-names">
+          <span class="ml-name">അസർ</span>
+          <span class="ar-name">العصر</span>
+        </div>
+      </div>
+      <div class="prayer-times">
+        <span id="adhan-asr">03:35</span>
+        <span id="iqamah-asr" class="iqamah-box">03:55</span>
+      </div>
+    </div>
+
+    <div id="row-maghrib" class="prayer-card">
+      <div class="prayer-info">
+        <div class="icon-box">🌅</div>
+        <div class="prayer-names">
+          <span class="ml-name">മഗ്‌രിബ്</span>
+          <span class="ar-name">المغرب</span>
+        </div>
+      </div>
+      <div class="prayer-times">
+        <span id="adhan-maghrib">06:37</span>
+        <span id="iqamah-maghrib" class="iqamah-box">06:44</span>
+      </div>
+    </div>
+
+    <div id="row-isha" class="prayer-card">
+      <div class="prayer-info">
+        <div class="icon-box">🌙</div>
+        <div class="prayer-names">
+          <span class="ml-name">ഇശാ</span>
+          <span class="ar-name">العشاء</span>
+        </div>
+      </div>
+      <div class="prayer-times">
+        <span id="adhan-isha">07:48</span>
+        <span id="iqamah-isha" class="iqamah-box">08:08</span>
+      </div>
+    </div>
+
+    <div id="row-jumuah" class="prayer-card">
+      <div class="prayer-info">
+        <div class="icon-box">🕌</div>
+        <div class="prayer-names">
+          <span class="ml-name">ജുമുഅ</span>
+          <span class="ar-name">الجمعة</span>
+        </div>
+      </div>
+      <div class="prayer-times">
+        <span id="adhan-jumuah">12:40</span>
+        <span class="iqamah-box" style="opacity: 0.3;">-</span>
+      </div>
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer>
+    <button onclick="openSettings()" class="gear-btn">⚙️</button>
+    <span class="footer-text">Kozhikode Standard Time</span>
+  </footer>
+
+  <!-- Settings Modal -->
+  <div id="settingsModal" class="modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <span class="modal-title">സമയക്രമീകരണങ്ങൾ</span>
+        <button onclick="closeSettings()" class="close-btn">✕</button>
+      </div>
+
+      <div class="form-group">
+        <label>പള്ളിയുടെ പേര്</label>
+        <input type="text" id="inputMasjid">
+      </div>
+      <div class="form-group">
+        <label>സ്ഥലം</label>
+        <input type="text" id="inputLocation">
+      </div>
+
+      <div class="form-group">
+        <label>ഹിജ്‌റി തീയതി മാറ്റം (Hijri Day Adjust)</label>
+        <select id="inputHijriOffset">
+          <option value="-2">-2 ദിവസം</option>
+          <option value="-1">-1 ദിവസം</option>
+          <option value="0" selected>സാധാരണ (0)</option>
+          <option value="1">+1 ദിവസം</option>
+          <option value="2">+2 ദിവസം</option>
+        </select>
+      </div>
+
+      <div style="display: flex; justify-content: space-between; align-items: center; margin: 10px 0;">
+        <span>ബീപ്പ് ശബ്ദം (Beep)</span>
+        <input type="checkbox" id="inputSound" style="width: 18px; height: 18px;">
+      </div>
+
+      <div style="margin-top: 10px;">
+        <div style="font-weight: 700; font-size: 11px; color: #38bdf8; margin-bottom: 6px;">ബാങ്ക് & ഇഖാമത്ത് സമയം</div>
+        <div id="timingsForm"></div>
+      </div>
+
+      <button onclick="saveSettings()" class="save-btn">സേവ് ചെയ്യുക</button>
+    </div>
+  </div>
+
+  <script>
+    const PRAYERS = [
+      { id: 'fajar', name: 'ഫജർ' },
+      { id: 'dhuhr', name: 'ളൂഹർ' },
+      { id: 'asr', name: 'അസർ' },
+      { id: 'maghrib', name: 'മഗ്‌രിബ്' },
+      { id: 'isha', name: 'ഇശാ' },
+      { id: 'jumuah', name: 'ജുമുഅ' }
+    ];
+
+    const HIJRI_MONTHS = [
+      "Muharram", "Safar", "Rabi al-Awwal", "Rabi al-Thani",
+      "Jumada al-Awwal", "Jumada al-Thani", "Rajab", "Sha'ban",
+      "Ramadan", "Shawwal", "Dhu al-Qi'dah", "Dhu al-Hijjah"
+    ];
+
+    const defaultData = {
+      masjidName: 'സലഫി മസ്ജിദ്',
+      masjidLocation: 'പൂകയൂർ കുന്നത്ത്',
+      soundEnabled: true,
+      hijriOffset: 0,
+      timings: {
+        fajar: { adhan: '05:06', iqamah: '05:31' },
+        dhuhr: { adhan: '12:28', iqamah: '12:48' },
+        asr: { adhan: '15:35', iqamah: '15:55' },
+        maghrib: { adhan: '18:37', iqamah: '18:44' },
+        isha: { adhan: '19:48', iqamah: '20:08' },
+        jumuah: { adhan: '12:40', iqamah: '-' }
+      }
+    };
+
+    let appData = JSON.parse(localStorage.getItem('masjid_clock_settings')) || defaultData;
+    let audioCtx = null;
+
+    function playBeep() {
+      if (!appData.soundEnabled) return;
+      try {
+        if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        const osc = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+        osc.type = 'sine';
+        osc.frequency.setValueAtTime(880, audioCtx.currentTime); 
+        gain.gain.setValueAtTime(0.1, audioCtx.currentTime);
+        osc.connect(gain);
+        gain.connect(audioCtx.destination);
+        osc.start();
+        osc.stop(audioCtx.currentTime + 1);
+      } catch (e) {}
+    }
+
+    function formatTime12(timeStr) {
+      if (!timeStr || timeStr === '-') return '-';
+      let [h, m] = timeStr.split(':').map(Number);
+      h = h % 12 || 12;
+      return `${h.toString().padStart(2, '0')}:${m.toString().padStart(2, '0')}`;
+    }
+
+    // Accurate Hijri Calculation Algorithm (Kuwaiti Algorithm Base)
+    function getHijriDate(date, offsetDays = 0) {
+      let d = new Date(date);
+      d.setDate(d.getDate() + parseInt(offsetDays));
+
+      let day = d.getDate();
+      let month = d.getMonth();
+      let year = d.getFullYear();
+
+      let m = month + 1;
+      let y = year;
+      if (m < 3) {
+        y -= 1;
+        m += 12;
+      }
+
+      let a = Math.floor(y / 100);
+      let b = 2 - a + Math.floor(a / 4);
+      if (y < 1583) b = 0;
+
+      let jd = Math.floor(365.25 * (y + 4716)) + Math.floor(30.6001 * (m + 1)) + day + b - 1524.5;
+
+      let z = jd + 0.5;
+      let i = Math.floor(z);
+      let f = z - i;
+
+      let l = i - 1948440 + 10632;
+      let n = Math.floor((l - 1) / 10631);
+      l = l - 10631 * n + 354;
+      let j = (Math.floor((10985 - l) / 5316)) * (Math.floor((50 * l) / 17719)) + (Math.floor(l / 5670)) * (Math.floor((43 * l) / 15238));
+      l = l - (Math.floor((30 - j) / 15)) * (Math.floor((17719 * j) / 50)) - (Math.floor(j / 16)) * (Math.floor((15238 * j) / 43)) + 29;
+
+      let hMonth = Math.floor((24 * l) / 709);
+      let hDay = l - Math.floor((709 * hMonth) / 24);
+      let hYear = 30 * n + j - 30;
+
+      return `${hDay} ${HIJRI_MONTHS[hMonth - 1]} ${hYear}`;
+    }
+
+    function renderUI() {
+      document.getElementById('masjidName').innerText = appData.masjidName;
+      document.getElementById('masjidLocation').innerText = appData.masjidLocation;
+
+      PRAYERS.forEach(p => {
+        const adhanEl = document.getElementById(`adhan-${p.id}`);
+        const iqamahEl = document.getElementById(`iqamah-${p.id}`);
+        if (adhanEl) adhanEl.innerText = formatTime12(appData.timings[p.id].adhan);
+        if (iqamahEl && p.id !== 'jumuah') iqamahEl.innerText = formatTime12(appData.timings[p.id].iqamah);
+      });
+    }
+
+    function updateClock() {
+      const now = new Date();
+      let hours = now.getHours();
+      const minutes = now.getMinutes();
+      const seconds = now.getSeconds();
+      const ampm = hours >= 12 ? 'PM' : 'AM';
+
+      hours = hours % 12 || 12;
+      document.getElementById('currentTime').innerText = 
+        `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+      document.getElementById('ampm').innerText = ampm;
+
+      const options = { year: 'numeric', month: 'long', day: 'numeric' };
+      document.getElementById('gregorianDate').innerText = now.toLocaleDateString('en-US', options);
+
+      // Set Hijri Date with Offset
+      document.getElementById('hijriDate').innerText = getHijriDate(now, appData.hijriOffset || 0);
+
+      calculateNextPrayer(now);
+    }
+
+    function calculateNextPrayer(now) {
+      const currentMinutes = now.getHours() * 60 + now.getMinutes();
+      const currentSeconds = now.getSeconds();
+      const isFriday = now.getDay() === 5;
+
+      let nextPrayer = null;
+      let minDiff = Infinity;
+
+      PRAYERS.forEach(p => {
+        if (isFriday && p.id === 'dhuhr') return;
+        if (!isFriday && p.id === 'jumuah') return;
+
+        const [h, m] = appData.timings[p.id].adhan.split(':').map(Number);
+        const prayerMinutes = h * 60 + m;
+
+        if (currentMinutes === prayerMinutes && currentSeconds === 0) {
+          playBeep();
+        }
+
+        let diff = prayerMinutes - currentMinutes;
+        if (diff <= 0) diff += 24 * 60;
+
+        if (diff < minDiff) {
+          minDiff = diff;
+          nextPrayer = { ...p, time: appData.timings[p.id].adhan, diffSeconds: diff * 60 - currentSeconds };
+        }
+      });
+
+      PRAYERS.forEach(p => {
+        const row = document.getElementById(`row-${p.id}`);
+        const iqamahBg = document.getElementById(`iqamah-${p.id}`);
+        if (row) {
+          if (nextPrayer && nextPrayer.id === p.id) {
+            row.className = 'prayer-card-active';
+            if (iqamahBg && p.id !== 'jumuah') iqamahBg.className = 'iqamah-box-active';
+          } else {
+            row.className = 'prayer-card';
+            if (iqamahBg && p.id !== 'jumuah') iqamahBg.className = 'iqamah-box';
+          }
+        }
+      });
+
+      if (nextPrayer) {
+        document.getElementById('nextPrayerName').innerText = nextPrayer.name;
+        document.getElementById('nextPrayerTime').innerText = formatTime12(nextPrayer.time);
+        
+        const hrs = Math.floor(nextPrayer.diffSeconds / 3600);
+        const mins = Math.floor((nextPrayer.diffSeconds % 3600) / 60);
+        const secs = nextPrayer.diffSeconds % 60;
+        document.getElementById('countdown').innerText = 
+          `${hrs.toString().padStart(2, '0')}:${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+      }
+    }
+
+    function openSettings() {
+      document.getElementById('inputMasjid').value = appData.masjidName;
+      document.getElementById('inputLocation').value = appData.masjidLocation;
+      document.getElementById('inputSound').checked = appData.soundEnabled;
+      document.getElementById('inputHijriOffset').value = appData.hijriOffset || 0;
+
+      const form = document.getElementById('timingsForm');
+      form.innerHTML = '';
+
+      PRAYERS.forEach(p => {
+        form.innerHTML += `
+          <div class="timing-row">
+            <span>${p.name}</span>
+            <input type="time" id="edit-adhan-${p.id}" value="${appData.timings[p.id].adhan}">
+            ${p.id !== 'jumuah' ? 
+              `<input type="time" id="edit-iqamah-${p.id}" value="${appData.timings[p.id].iqamah}">` : 
+              `<span style="text-align:center; color:#64748b;">-</span>`}
+          </div>
+        `;
+      });
+
+      document.getElementById('settingsModal').style.display = 'flex';
+    }
+
+    function closeSettings() {
+      document.getElementById('settingsModal').style.display = 'none';
+    }
+
+    function saveSettings() {
+      appData.masjidName = document.getElementById('inputMasjid').value;
+      appData.masjidLocation = document.getElementById('inputLocation').value;
+      appData.soundEnabled = document.getElementById('inputSound').checked;
+      appData.hijriOffset = parseInt(document.getElementById('inputHijriOffset').value);
+
+      PRAYERS.forEach(p => {
+        const adhan = document.getElementById(`edit-adhan-${p.id}`).value;
+        appData.timings[p.id].adhan = adhan;
+
+        if (p.id !== 'jumuah') {
+          const iqamah = document.getElementById(`edit-iqamah-${p.id}`).value;
+          appData.timings[p.id].iqamah = iqamah;
+        }
+      });
+
+      localStorage.setItem('masjid_clock_settings', JSON.stringify(appData));
+      renderUI();
+      updateClock();
+      closeSettings();
+    }
+
+    renderUI();
+    updateClock();
+    setInterval(updateClock, 1000);
+  </script>
+<
