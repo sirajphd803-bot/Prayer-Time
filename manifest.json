@@ -1,6 +1,6 @@
 {
-  "name": "Marks Register App",
-  "short_name": "MarksApp",
+  "name": "Prayer Time",
+  "short_name": "PrayerApp",
   "start_url": "./index.html",
   "display": "standalone",
   "background_color": "#F4F6F9",
