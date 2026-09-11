@@ -3,14 +3,8 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-  <title>Prayer time</title>
-  <!-- PWA Web App Manifest & App Icon Link -->
-<link rel="manifest" href="manifest.json">
-<meta name="theme-color" content="#0284c7">
-<link rel="apple-touch-icon" href="icon.png">
+  <title>മസ്ജിദ് പ്രയർ ടൈം ഡിസ്‌പ്ലേ</title>
 
-
-  <!-- Google Font: Anek Malayalam -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Anek+Malayalam:wght@400;600;700;800&display=swap" rel="stylesheet">
@@ -36,21 +30,20 @@
       user-select: none;
     }
 
-    /* Header Styling */
     header {
       text-align: center;
       flex-shrink: 0;
     }
 
     .masjid-title {
-      font-size: 34px;
+      font-size: 22px;
       font-weight: 800;
       color: #ffffff;
       line-height: 1.1;
     }
 
     .masjid-location {
-      font-size: 20px;
+      font-size: 12px;
       color: #bae6fd;
       margin-top: 2px;
     }
@@ -60,7 +53,7 @@
     }
 
     .time-display {
-      font-size: 32px;
+      font-size: 40px;
       font-weight: 800;
       line-height: 1;
       display: flex;
@@ -96,7 +89,6 @@
       margin-top: 6px;
     }
 
-    /* Table & Cards Layout */
     main {
       flex: 1;
       display: flex;
@@ -159,36 +151,41 @@
     }
 
     .ar-name {
-      font-size: 16px;
+      font-size: 10px;
       color: #7dd3fc;
     }
 
     .prayer-times {
       display: flex;
       align-items: center;
-      gap: 12px;
+      gap: 10px;
       font-weight: 700;
-      font-size: 16px;
+      font-size: 14px;
+    }
+
+    .time-val {
+      background: rgba(0, 0, 0, 0.15);
+      padding: 3px 6px;
+      border-radius: 6px;
     }
 
     .iqamah-box {
       background: rgba(255, 255, 255, 0.15);
-      padding: 2px 8px;
+      padding: 3px 6px;
       border-radius: 6px;
-      min-width: 58px;
+      min-width: 65px;
       text-align: center;
     }
 
     .iqamah-box-active {
       background: #06b6d4;
       color: #0f172a;
-      padding: 2px 8px;
+      padding: 3px 6px;
       border-radius: 6px;
-      min-width: 58px;
+      min-width: 65px;
       text-align: center;
     }
 
-    /* Footer */
     footer {
       display: flex;
       justify-content: space-between;
@@ -212,11 +209,10 @@
       color: rgba(224, 242, 254, 0.6);
     }
 
-    /* Modal Styling */
     .modal {
       position: fixed;
       inset: 0;
-      background: rgba(0, 0, 0, 0.8);
+      background: rgba(0, 0, 0, 0.85);
       display: none;
       align-items: center;
       justify-content: center;
@@ -233,7 +229,7 @@
       padding: 16px;
       max-height: 90vh;
       overflow-y: auto;
-      font-size: 13px;
+      font-size: 12px;
     }
 
     .modal-header {
@@ -268,7 +264,7 @@
       margin-bottom: 2px;
     }
 
-    .form-group input[type="text"], .form-group select {
+    .form-group input, .form-group select {
       width: 100%;
       background: #1e293b;
       border: 1px solid #334155;
@@ -292,7 +288,7 @@
       background: #334155;
       border: none;
       color: #fff;
-      padding: 3px;
+      padding: 4px;
       border-radius: 4px;
       text-align: center;
     }
@@ -312,15 +308,14 @@
 </head>
 <body>
 
-  <!-- Header -->
   <header>
     <div id="masjidName" class="masjid-title">സലഫി മസ്ജിദ്</div>
     <div id="masjidLocation" class="masjid-location">പൂകയൂർ കുന്നത്ത്</div>
 
     <div class="clock-container">
       <div class="time-display">
-        <span id="currentTime">00:00:00</span>
-        <span id="ampm" class="ampm">AM</span>
+        <span id="currentTime">--:--:--</span>
+        <span id="ampm" class="ampm">--</span>
       </div>
 
       <div class="date-row">
@@ -337,94 +332,74 @@
     </div>
   </header>
 
-  <!-- Main Prayer Cards -->
   <main>
     <div id="row-fajar" class="prayer-card">
       <div class="prayer-info">
         <div class="icon-box">🌤️</div>
-        <div class="prayer-names">
-          <span class="ml-name">ഫജ്ർ</span>
-          <span class="ar-name">الفجر</span>
-        </div>
+        <div class="prayer-names"><span class="ml-name">ഫജർ</span><span class="ar-name">الفجر</span></div>
       </div>
       <div class="prayer-times">
-        <span id="adhan-fajar">05:06</span>
-        <span id="iqamah-fajar" class="iqamah-box">05:31</span>
+        <span id="adhan-fajar" class="time-val">05:06 AM</span>
+        <span id="iqamah-fajar" class="iqamah-box">05:31 AM</span>
       </div>
     </div>
 
     <div id="row-dhuhr" class="prayer-card">
       <div class="prayer-info">
         <div class="icon-box">☀️</div>
-        <div class="prayer-names">
-          <span class="ml-name">ളുഹ്ർ</span>
-          <span class="ar-name">الظهر</span>
-        </div>
+        <div class="prayer-names"><span class="ml-name">ളൂഹർ</span><span class="ar-name">الظهر</span></div>
       </div>
       <div class="prayer-times">
-        <span id="adhan-dhuhr">12:28</span>
-        <span id="iqamah-dhuhr" class="iqamah-box">12:48</span>
+        <span id="adhan-dhuhr" class="time-val">12:28 PM</span>
+        <span id="iqamah-dhuhr" class="iqamah-box">12:48 PM</span>
       </div>
     </div>
 
     <div id="row-asr" class="prayer-card">
       <div class="prayer-info">
         <div class="icon-box">🌥️</div>
-        <div class="prayer-names">
-          <span class="ml-name">അസർ</span>
-          <span class="ar-name">العصر</span>
-        </div>
+        <div class="prayer-names"><span class="ml-name">അസർ</span><span class="ar-name">العصر</span></div>
       </div>
       <div class="prayer-times">
-        <span id="adhan-asr">03:35</span>
-        <span id="iqamah-asr" class="iqamah-box">03:55</span>
+        <span id="adhan-asr" class="time-val">03:35 PM</span>
+        <span id="iqamah-asr" class="iqamah-box">03:55 PM</span>
       </div>
     </div>
 
     <div id="row-maghrib" class="prayer-card">
       <div class="prayer-info">
         <div class="icon-box">🌅</div>
-        <div class="prayer-names">
-          <span class="ml-name">മഗ്‌രിബ്</span>
-          <span class="ar-name">المغرب</span>
-        </div>
+        <div class="prayer-names"><span class="ml-name">മഗ്‌രിബ്</span><span class="ar-name">المغرب</span></div>
       </div>
       <div class="prayer-times">
-        <span id="adhan-maghrib">06:37</span>
-        <span id="iqamah-maghrib" class="iqamah-box">06:44</span>
+        <span id="adhan-maghrib" class="time-val">06:37 PM</span>
+        <span id="iqamah-maghrib" class="iqamah-box">06:44 PM</span>
       </div>
     </div>
 
     <div id="row-isha" class="prayer-card">
       <div class="prayer-info">
         <div class="icon-box">🌙</div>
-        <div class="prayer-names">
-          <span class="ml-name">ഇശാ</span>
-          <span class="ar-name">العشاء</span>
-        </div>
+        <div class="prayer-names"><span class="ml-name">ഇശാ</span><span class="ar-name">العشاء</span></div>
       </div>
       <div class="prayer-times">
-        <span id="adhan-isha">07:48</span>
-        <span id="iqamah-isha" class="iqamah-box">08:08</span>
+        <span id="adhan-isha" class="time-val">07:48 PM</span>
+        <span id="iqamah-isha" class="iqamah-box">08:08 PM</span>
       </div>
     </div>
 
     <div id="row-jumuah" class="prayer-card">
       <div class="prayer-info">
         <div class="icon-box">🕌</div>
-        <div class="prayer-names">
-          <span class="ml-name">ജുമുഅ</span>
-          <span class="ar-name">الجمعة</span>
-        </div>
+        <div class="prayer-names"><span class="ml-name">ജുമുഅ</span><span class="ar-name">الجمعة</span></div>
       </div>
       <div class="prayer-times">
-        <span id="adhan-jumuah">12:40</span>
-        <span class="iqamah-box" style="opacity: 0.3;">-</span>
+        <span id="adhan-jumuah" class="time-val">12:40 PM</span>
+        <span class="iqamah-box" style="opacity:0.3;">-</span>
       </div>
     </div>
   </main>
 
-  <!-- Footer -->
   <footer>
     <button onclick="openSettings()" class="gear-btn">⚙️</button>
     <span class="footer-text">Kozhikode Standard Time</span>
@@ -448,7 +423,7 @@
       </div>
 
       <div class="form-group">
-        <label>ഹിജ്‌റി തീയതി മാറ്റം (Hijri Day Adjust)</label>
+        <label>ഹിജ്‌റി തീയതി മാറ്റം (Hijri Adjust)</label>
         <select id="inputHijriOffset">
           <option value="-2">-2 ദിവസം</option>
           <option value="-1">-1 ദിവസം</option>
@@ -458,13 +433,13 @@
         </select>
       </div>
 
-      <div style="display: flex; justify-content: space-between; align-items: center; margin: 10px 0;">
+      <div style="display:flex; justify-content:space-between; align-items:center; margin:10px 0;">
         <span>ബീപ്പ് ശബ്ദം (Beep)</span>
-        <input type="checkbox" id="inputSound" style="width: 18px; height: 18px;">
+        <input type="checkbox" id="inputSound" style="width:18px; height:18px;">
       </div>
 
-      <div style="margin-top: 10px;">
-        <div style="font-weight: 700; font-size: 11px; color: #38bdf8; margin-bottom: 6px;">ബാങ്ക് & ഇഖാമത്ത് സമയം</div>
+      <div style="margin-top:10px;">
+        <div style="font-weight:700; font-size:11px; color:#38bdf8; margin-bottom:6px;">ബാങ്ക് സമയം & ഇഖാമത്ത് ഗ്യാപ്പ് (മിനിറ്റ്)</div>
         <div id="timingsForm"></div>
       </div>
 
@@ -494,16 +469,26 @@
       soundEnabled: true,
       hijriOffset: 0,
       timings: {
-        fajar: { adhan: '05:06', iqamah: '05:31' },
-        dhuhr: { adhan: '12:28', iqamah: '12:48' },
-        asr: { adhan: '15:35', iqamah: '15:55' },
-        maghrib: { adhan: '18:37', iqamah: '18:44' },
-        isha: { adhan: '19:48', iqamah: '20:08' },
-        jumuah: { adhan: '12:40', iqamah: '-' }
+        fajar: { adhan: '05:06', gap: 25 },
+        dhuhr: { adhan: '12:28', gap: 20 },
+        asr: { adhan: '15:35', gap: 20 },
+        maghrib: { adhan: '18:37', gap: 7 },
+        isha: { adhan: '19:48', gap: 20 },
+        jumuah: { adhan: '12:40', gap: 0 }
       }
     };
 
-    let appData = JSON.parse(localStorage.getItem('masjid_clock_settings')) || defaultData;
+    let appData = defaultData;
+
+    try {
+      const saved = localStorage.getItem('masjid_clock_v6_settings');
+      if (saved) {
+        appData = JSON.parse(saved);
+      }
+    } catch(e) {
+      console.log('LocalStorage not available');
+    }
+
     let audioCtx = null;
 
     function playBeep() {
@@ -522,50 +507,51 @@
       } catch (e) {}
     }
 
-    function formatTime12(timeStr) {
-      if (!timeStr || timeStr === '-') return '-';
-      let [h, m] = timeStr.split(':').map(Number);
-      h = h % 12 || 12;
-      return `${h.toString().padStart(2, '0')}:${m.toString().padStart(2, '0')}`;
+    function timeToMinutes(timeStr) {
+      if (!timeStr || timeStr === '-') return 9999;
+      const parts = timeStr.split(':');
+      return parseInt(parts[0]) * 60 + parseInt(parts[1]);
     }
 
-    // Accurate Hijri Calculation Algorithm (Kuwaiti Algorithm Base)
+    function minutesTo12Hour(mins) {
+      if (mins >= 9999) return '-';
+      let h = Math.floor(mins / 60) % 24;
+      let m = mins % 60;
+      let period = h >= 12 ? 'PM' : 'AM';
+      let displayH = h % 12 || 12;
+      return `${displayH.toString().padStart(2, '0')}:${m.toString().padStart(2, '0')} ${period}`;
+    }
+
     function getHijriDate(date, offsetDays = 0) {
-      let d = new Date(date);
-      d.setDate(d.getDate() + parseInt(offsetDays));
+      try {
+        let d = new Date(date);
+        d.setDate(d.getDate() + parseInt(offsetDays || 0));
 
-      let day = d.getDate();
-      let month = d.getMonth();
-      let year = d.getFullYear();
+        let day = d.getDate();
+        let month = d.getMonth() + 1;
+        let year = d.getFullYear();
 
-      let m = month + 1;
-      let y = year;
-      if (m < 3) {
-        y -= 1;
-        m += 12;
+        if (month < 3) { year -= 1; month += 12; }
+        let a = Math.floor(year / 100);
+        let b = 2 - a + Math.floor(a / 4);
+        let jd = Math.floor(365.25 * (year + 4716)) + Math.floor(30.6001 * (month + 1)) + day + b - 1524.5;
+
+        let z = jd + 0.5;
+        let i = Math.floor(z);
+        let l = i - 1948440 + 10632;
+        let n = Math.floor((l - 1) / 10631);
+        l = l - 10631 * n + 354;
+        let j = (Math.floor((10985 - l) / 5316)) * (Math.floor((50 * l) / 17719)) + (Math.floor(l / 5670)) * (Math.floor((43 * l) / 15238));
+        l = l - (Math.floor((30 - j) / 15)) * (Math.floor((17719 * j) / 50)) - (Math.floor(j / 16)) * (Math.floor((15238 * j) / 43)) + 29;
+
+        let hMonth = Math.floor((24 * l) / 709);
+        let hDay = l - Math.floor((709 * hMonth) / 24);
+        let hYear = 30 * n + j - 30;
+
+        return `${hDay} ${HIJRI_MONTHS[hMonth - 1] || ''} ${hYear}`;
+      } catch (e) {
+        return "-- --- ----";
       }
-
-      let a = Math.floor(y / 100);
-      let b = 2 - a + Math.floor(a / 4);
-      if (y < 1583) b = 0;
-
-      let jd = Math.floor(365.25 * (y + 4716)) + Math.floor(30.6001 * (m + 1)) + day + b - 1524.5;
-
-      let z = jd + 0.5;
-      let i = Math.floor(z);
-      let f = z - i;
-
-      let l = i - 1948440 + 10632;
-      let n = Math.floor((l - 1) / 10631);
-      l = l - 10631 * n + 354;
-      let j = (Math.floor((10985 - l) / 5316)) * (Math.floor((50 * l) / 17719)) + (Math.floor(l / 5670)) * (Math.floor((43 * l) / 15238));
-      l = l - (Math.floor((30 - j) / 15)) * (Math.floor((17719 * j) / 50)) - (Math.floor(j / 16)) * (Math.floor((15238 * j) / 43)) + 29;
-
-      let hMonth = Math.floor((24 * l) / 709);
-      let hDay = l - Math.floor((709 * hMonth) / 24);
-      let hYear = 30 * n + j - 30;
-
-      return `${hDay} ${HIJRI_MONTHS[hMonth - 1]} ${hYear}`;
     }
 
     function renderUI() {
@@ -573,67 +559,97 @@
       document.getElementById('masjidLocation').innerText = appData.masjidLocation;
 
       PRAYERS.forEach(p => {
+        const adhanMins = timeToMinutes(appData.timings[p.id].adhan);
+        const gap = parseInt(appData.timings[p.id].gap || 0);
+        const iqamahMins = adhanMins + gap;
+
         const adhanEl = document.getElementById(`adhan-${p.id}`);
         const iqamahEl = document.getElementById(`iqamah-${p.id}`);
-        if (adhanEl) adhanEl.innerText = formatTime12(appData.timings[p.id].adhan);
-        if (iqamahEl && p.id !== 'jumuah') iqamahEl.innerText = formatTime12(appData.timings[p.id].iqamah);
+
+        if (adhanEl) adhanEl.innerText = minutesTo12Hour(adhanMins);
+        if (iqamahEl && p.id !== 'jumuah') iqamahEl.innerText = minutesTo12Hour(iqamahMins);
       });
     }
 
     function updateClock() {
-      const now = new Date();
-      let hours = now.getHours();
-      const minutes = now.getMinutes();
-      const seconds = now.getSeconds();
-      const ampm = hours >= 12 ? 'PM' : 'AM';
+      try {
+        const now = new Date();
+        let hours = now.getHours();
+        const minutes = now.getMinutes();
+        const seconds = now.getSeconds();
+        const ampm = hours >= 12 ? 'PM' : 'AM';
 
-      hours = hours % 12 || 12;
-      document.getElementById('currentTime').innerText = 
-        `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
-      document.getElementById('ampm').innerText = ampm;
+        let displayHours = hours % 12 || 12;
+        document.getElementById('currentTime').innerText = 
+          `${displayHours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+        document.getElementById('ampm').innerText = ampm;
 
-      const options = { year: 'numeric', month: 'long', day: 'numeric' };
-      document.getElementById('gregorianDate').innerText = now.toLocaleDateString('en-US', options);
+        const options = { year: 'numeric', month: 'long', day: 'numeric' };
+        document.getElementById('gregorianDate').innerText = now.toLocaleDateString('en-US', options);
+        document.getElementById('hijriDate').innerText = getHijriDate(now, appData.hijriOffset || 0);
 
-      // Set Hijri Date with Offset
-      document.getElementById('hijriDate').innerText = getHijriDate(now, appData.hijriOffset || 0);
-
-      calculateNextPrayer(now);
+        calculatePrayerState(now);
+      } catch (err) {
+        console.error("Clock update error: ", err);
+      }
     }
 
-    function calculateNextPrayer(now) {
+    function calculatePrayerState(now) {
       const currentMinutes = now.getHours() * 60 + now.getMinutes();
       const currentSeconds = now.getSeconds();
       const isFriday = now.getDay() === 5;
 
+      let activePrayerId = null;
       let nextPrayer = null;
-      let minDiff = Infinity;
 
-      PRAYERS.forEach(p => {
-        if (isFriday && p.id === 'dhuhr') return;
-        if (!isFriday && p.id === 'jumuah') return;
+      const activeList = PRAYERS.filter(p => {
+        if (isFriday && p.id === 'dhuhr') return false;
+        if (!isFriday && p.id === 'jumuah') return false;
+        return true;
+      });
 
-        const [h, m] = appData.timings[p.id].adhan.split(':').map(Number);
-        const prayerMinutes = h * 60 + m;
+      for (let p of activeList) {
+        const adhanMins = timeToMinutes(appData.timings[p.id].adhan);
+        const gap = parseInt(appData.timings[p.id].gap || 0);
+        let iqamahMins = adhanMins + gap;
+        
+        if (p.id === 'jumuah') {
+          iqamahMins = adhanMins + 20;
+        }
 
-        if (currentMinutes === prayerMinutes && currentSeconds === 0) {
+        if (currentMinutes === adhanMins && currentSeconds === 0) {
           playBeep();
         }
 
-        let diff = prayerMinutes - currentMinutes;
+        if (currentMinutes >= adhanMins && currentMinutes < iqamahMins) {
+          activePrayerId = p.id;
+          break;
+        }
+      }
+
+      let minDiff = Infinity;
+      activeList.forEach(p => {
+        const adhanMins = timeToMinutes(appData.timings[p.id].adhan);
+        let diff = adhanMins - currentMinutes;
         if (diff <= 0) diff += 24 * 60;
 
         if (diff < minDiff) {
           minDiff = diff;
-          nextPrayer = { ...p, time: appData.timings[p.id].adhan, diffSeconds: diff * 60 - currentSeconds };
+          nextPrayer = {
+            ...p,
+            mins: adhanMins,
+            diffSeconds: diff * 60 - currentSeconds
+          };
         }
       });
+
+      const highlightId = activePrayerId || (nextPrayer ? nextPrayer.id : null);
 
       PRAYERS.forEach(p => {
         const row = document.getElementById(`row-${p.id}`);
         const iqamahBg = document.getElementById(`iqamah-${p.id}`);
         if (row) {
-          if (nextPrayer && nextPrayer.id === p.id) {
+          if (p.id === highlightId) {
             row.className = 'prayer-card-active';
             if (iqamahBg && p.id !== 'jumuah') iqamahBg.className = 'iqamah-box-active';
           } else {
@@ -645,7 +661,7 @@
 
       if (nextPrayer) {
         document.getElementById('nextPrayerName').innerText = nextPrayer.name;
-        document.getElementById('nextPrayerTime').innerText = formatTime12(nextPrayer.time);
+        document.getElementById('nextPrayerTime').innerText = minutesTo12Hour(nextPrayer.mins);
         
         const hrs = Math.floor(nextPrayer.diffSeconds / 3600);
         const mins = Math.floor((nextPrayer.diffSeconds % 3600) / 60);
@@ -670,7 +686,7 @@
             <span>${p.name}</span>
             <input type="time" id="edit-adhan-${p.id}" value="${appData.timings[p.id].adhan}">
             ${p.id !== 'jumuah' ? 
-              `<input type="time" id="edit-iqamah-${p.id}" value="${appData.timings[p.id].iqamah}">` : 
+              `<input type="number" id="edit-gap-${p.id}" value="${appData.timings[p.id].gap}" placeholder="Min">` : 
               `<span style="text-align:center; color:#64748b;">-</span>`}
           </div>
         `;
@@ -694,19 +710,25 @@
         appData.timings[p.id].adhan = adhan;
 
         if (p.id !== 'jumuah') {
-          const iqamah = document.getElementById(`edit-iqamah-${p.id}`).value;
-          appData.timings[p.id].iqamah = iqamah;
+          const gap = document.getElementById(`edit-gap-${p.id}`).value;
+          appData.timings[p.id].gap = parseInt(gap) || 0;
         }
       });
 
-      localStorage.setItem('masjid_clock_settings', JSON.stringify(appData));
+      try {
+        localStorage.setItem('masjid_clock_v6_settings', JSON.stringify(appData));
+      } catch(e) {}
+
       renderUI();
       updateClock();
       closeSettings();
     }
 
+    // Initial Trigger
     renderUI();
     updateClock();
     setInterval(updateClock, 1000);
   </script>
-<
+</body>
+</html>
+
